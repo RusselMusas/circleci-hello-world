@@ -11,7 +11,7 @@ jobs:
     steps:
       - run:
           name: "Print hello"
-          command: "echo Hello"
+          command: "echo Hello Russel"
 
   print_world:
     # Print World Job
@@ -20,7 +20,7 @@ jobs:
     steps:
       - run:
           name: "Print World"
-          command: "echo World"
+          command: "echo World Russel"
 
 # Invoke jobs via workflows
 workflows:
