@@ -3,6 +3,15 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 jobs:
+
+  print_init:
+    # Print Branch name
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: "What branch am I on?"
+          command: echo current branch is ${CIRCLE_BRANCH}
   
   print_hello:
     # Print Hello Job
@@ -26,7 +35,10 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - print_hello
+      - print_init
+      - print_hello:
+          requires:
+            - print_init
       - print_world:
           requires:
             - print_hello
