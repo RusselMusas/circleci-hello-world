@@ -8,10 +8,27 @@ jobs:
     # Print Branch name
     docker:
       - image: circleci/node:13.8.0
+    
+    environment:
+      FIRSTNAME: RUSSEL
+      LASTNAME: MUSASA
+    
     steps:
       - run:
+          name: "Set my name and use"
+          command: |
+            echo Your name is: ${MY_NAME}
+          environment:
+            MY_NAME: Russel Musasa
+      
+      - run:
+          name: "What your name?"
+          command: echo Your name is ${FIRSTNAME} ${LASTNAME}
+
+      - run:
           name: "What branch am I on?"
-          command: echo current branch is ${CIRCLE_BRANCH}
+          command: |
+            echo current branch name is: ${CIRCLE_BRANCH}
   
   print_hello:
     # Print Hello Job
@@ -20,7 +37,7 @@ jobs:
     steps:
       - run:
           name: "Print hello"
-          command: "echo Hello Russel"
+          command: echo Hello
 
   print_world:
     # Print World Job
@@ -29,7 +46,7 @@ jobs:
     steps:
       - run:
           name: "Print World"
-          command: "echo World Russel"
+          command: echo World
 
 # Invoke jobs via workflows
 workflows:
