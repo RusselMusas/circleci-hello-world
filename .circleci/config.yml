@@ -1,13 +1,31 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 version: 2.1
 
+# Aliases
+defaults: &defaultsDockerImage
+  docker:
+    - image: circleci/node:13.8.0
+
+# Use command for Reusable steps
+commands:
+  print_pipeline_id:
+    description: "Circle CI Workflow ID"
+    parameters:
+      id:
+        type: string
+    steps:
+      - run:
+          name: "Print Circle CI Workflow ID"
+          command: echo << parameters.id >>
+
 # Define a job to be invoked later in a workflow.
 jobs:
 
   print_init:
     # Print Branch name
-    docker:
-      - image: circleci/node:13.8.0
+    
+    # Using Anchor
+    <<: *defaultsDockerImage
     
     environment:
       FIRSTNAME: RUSSEL
@@ -29,11 +47,17 @@ jobs:
           name: "What branch am I on?"
           command: |
             echo current branch name is: ${CIRCLE_BRANCH}
+      
+      # Use command here
+      - print_pipeline_id:
+          id: << pipeline.id >>
   
   print_hello:
     # Print Hello Job
-    docker: 
-      - image: circleci/node:13.8.0
+    
+    # Using Anchor
+    <<: *defaultsDockerImage
+
     steps:
       - run:
           name: "Print hello"
@@ -41,8 +65,10 @@ jobs:
 
   print_world:
     # Print World Job
-    docker: 
-      - image: circleci/node:13.8.0
+    
+    # Using Anchor
+    <<: *defaultsDockerImage
+
     steps:
       - run:
           name: "Print World"
@@ -50,8 +76,10 @@ jobs:
   
   save_hello_world_output:
     # Save Text into output file
-    docker: 
-      - image: circleci/node:13.8.0
+    
+    # Using Anchor
+    <<: *defaultsDockerImage
+
     steps:
       - run:
           name: "Save text into file"
@@ -66,8 +94,10 @@ jobs:
 
   print_output_file:
     # Print Hello World Job output
-    docker: 
-      - image: circleci/node:13.8.0
+    
+    # Using Anchor
+    <<: *defaultsDockerImage
+
     steps:
       - attach_workspace:
           at: workspace
