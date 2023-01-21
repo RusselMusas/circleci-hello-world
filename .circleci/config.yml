@@ -47,6 +47,33 @@ jobs:
       - run:
           name: "Print World"
           command: echo World
+  
+  save_hello_world_output:
+    # Save Text into output file
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: "Save text into file"
+          command: mkdir workspace && echo "text to output here" > workspace/output.txt
+      - run: 
+          name: "List workspace content"
+          command: ls -lhtra workspace
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - output.txt
+
+  print_output_file:
+    # Print Hello World Job output
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: workspace
+      - run:
+          name: "Print File content"
+          command: cd workspace && cat output.txt
 
 # Invoke jobs via workflows
 workflows:
@@ -59,3 +86,9 @@ workflows:
       - print_world:
           requires:
             - print_hello
+      - save_hello_world_output:
+          requires:
+            - print_hello
+      - print_output_file:
+          requires:
+            - save_hello_world_output
