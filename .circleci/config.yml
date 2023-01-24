@@ -105,6 +105,25 @@ jobs:
           name: "Print File content"
           command: cd workspace && cat output.txt
 
+  print_greetings:
+    # On fail test
+
+    # Using Anchor
+    <<: *defaultsDockerImage
+
+    steps:
+      - run: 
+          name: "Greetings"
+          command: echo I greet all of you!   # && return 1
+      
+      - run:
+          name: "On Greetings error"
+          command: echo Error occurred on Greetings step.
+          when: on_fail
+
+
+
+
 # Invoke jobs via workflows
 workflows:
   say-hello-workflow:
@@ -122,3 +141,6 @@ workflows:
       - print_output_file:
           requires:
             - save_hello_world_output
+      - print_greetings:
+          requires:
+            - print_output_file
